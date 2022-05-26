@@ -1,8 +1,6 @@
 const {workerData} = require("worker_threads");
 const axios = require('axios')
 const cheerio = require('cheerio');
-const HttpsProxyAgent = require("https-proxy-agent");
-const  tunnel = require('tunnel');
 
 let userAgent = [{'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246', 'Accept-Language' : '*'}
 , {'User-Agent' : "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36", 'Accept-Language' : '*'},
@@ -18,25 +16,14 @@ axios.get("https://rootfails.com/proxy/f021011c43b83a07a58d3708aed53f5b").then(d
     let host = data.data.split("\n");
 
     host.forEach(proxy => {
-        let tunnelingAgent = tunnel.httpOverHttp({
-            proxy: { // Proxy settings
-                host:  proxy.split(":")[0], // Defaults to 'localhost'
-                port: proxy.split(":")[1], // Defaults to 80
 
-                // Header fields for proxy server if necessary
-                headers: {
-                    'User-Agent' : userAgent[Math.floor(Math.random() * 6)]
-                }
-            }
-        });
+        const obj = {};
+        obj.proxy = {};
+        obj.proxy.host = proxy.split(":")[0];
+        obj.proxy.port = proxy.split(":")[1];
+        obj.proxy.headers = userAgent[Math.floor(Math.random() * 6)]
 
-        // const obj = new HttpsProxyAgent({host: proxy.split(":")[0], port: proxy.split(":")[1]});
-        // obj.proxy = {};
-        // obj.proxy.host = ;
-        // obj.proxy.port = proxy.split(":")[1];
-        // obj.proxy.headers = userAgent[Math.floor(Math.random() * 6)]
-
-        hostObj.push(tunnelingAgent);
+        hostObj.push(obj);
     })
 
 })
@@ -50,17 +37,17 @@ async function parseData(url) {
 
     try {
         if (!isProxyUse) {
-            data = await axios.get(url, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
         } else {
-            data = await axios.get(url, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
         }
     } catch (e) {
         if (!isProxyUse) {
             isProxyUse = true;
-            data = await axios.get(url, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
         } else {
             isProxyUse = false;
-            data = await axios.get(url, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
         }
 
     }
@@ -91,17 +78,17 @@ async function parseData(url) {
 
             try {
                 if (!isProxyUse) {
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}});
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
                 } else {
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                 }
             } catch (e) {
                 if (!isProxyUse) {
                     isProxyUse = true;
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                 } else {
                     isProxyUse = false;
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}});
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
                 }
             }
 
@@ -132,18 +119,18 @@ async function parseData(url) {
 
                 try {
                     if (!isProxyUse) {
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}});
+                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
                     } else {
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
 
                     }
                 } catch (e) {
                     if (!isProxyUse) {
                         isProxyUse = true;
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}})
+                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                     } else {
                         isProxyUse = false;
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , {headers: {'User-Agent' : hostObj[Math.floor(Math.random() * hostObj.length)]}});
+                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
                     }
                 }
 
