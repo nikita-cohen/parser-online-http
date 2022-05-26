@@ -117,46 +117,50 @@ async function parseData(url) {
             }
 
             for (let i = 0; i < elementArray.length; i++) {
-
-                let datathree;
-
                 try {
-                    if (!isProxyUse) {
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                    } else {
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+                    let datathree;
 
+                    try {
+                        if (!isProxyUse) {
+                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                        } else {
+                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+
+                        }
+                    } catch (e) {
+                        if (!isProxyUse) {
+                            isProxyUse = true;
+                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+                        } else {
+                            isProxyUse = false;
+                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                        }
                     }
+
+                    const cheeriote = cheerio.load(datathree.data);
+
+                    const element2 = cheeriote('div.col-md-8.col-sm-8.col-xs-7 > h5')
+                    const elementArray2 = [];
+
+                    for (let i = 0; i < element2.length; i++) {
+                        elementArray2.push({"href":  $(element2[i]).children("a").attr('href'), "text": $(element2[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
+                    }
+
+
+                    elementArray2.forEach((x, index) => {
+                        obj.url = url.slice(0, -1) + x.href;
+                        obj.title = x.text;
+
+                        console.log(obj)
+
+                        // axios.post("https://search.findmanual.guru/manual/search/insert", obj)
+                        //     .then(data => console.log("ok " + index))
+                        //     .catch(e => console.log(e));
+                    })
                 } catch (e) {
-                    if (!isProxyUse) {
-                        isProxyUse = true;
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                    } else {
-                        isProxyUse = false;
-                        datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                    }
+                    console.log("here the problem")
                 }
 
-                const cheeriote = cheerio.load(datathree.data);
-
-                const element2 = cheeriote('div.col-md-8.col-sm-8.col-xs-7 > h5')
-                const elementArray2 = [];
-
-                for (let i = 0; i < element2.length; i++) {
-                    elementArray2.push({"href":  $(element2[i]).children("a").attr('href'), "text": $(element2[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
-                }
-
-
-                elementArray2.forEach((x, index) => {
-                    obj.url = url.slice(0, -1) + x.href;
-                    obj.title = x.text;
-
-                    console.log(obj)
-
-                    // axios.post("https://search.findmanual.guru/manual/search/insert", obj)
-                    //     .then(data => console.log("ok " + index))
-                    //     .catch(e => console.log(e));
-                })
             }
 
         }
