@@ -118,6 +118,7 @@ async function parseData(url) {
 
             for (let i = 0; i < elementArray.length; i++) {
                 try {
+                    console.log(i);
                     let datathree;
 
                     try {
@@ -158,7 +159,7 @@ async function parseData(url) {
                         //     .catch(e => console.log(e));
                     })
                 } catch (e) {
-                    console.log("here the problem")
+                    console.error("here the problem" + i)
                 }
 
             }
