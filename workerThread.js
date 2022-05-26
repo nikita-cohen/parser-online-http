@@ -18,6 +18,9 @@ axios.get("https://rootfails.com/proxy/f021011c43b83a07a58d3708aed53f5b").then(d
     host.forEach(proxy => {
 
         const obj = {};
+        obj.host = proxy.split(":")[0];
+        obj.port = proxy.split(":")[1];
+        obj.headers = userAgent[Math.floor(Math.random() * 6)]
         obj.proxy = {};
         obj.proxy.host = proxy.split(":")[0];
         obj.proxy.port = proxy.split(":")[1];
