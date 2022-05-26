@@ -76,92 +76,98 @@ async function parseData(url) {
 
 
         for (let i = 0; i < hrefArray.length; i++) {
-
-            let datatwo;
-
             try {
-                if (!isProxyUse) {
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                } else {
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                }
-            } catch (e) {
-                if (!isProxyUse) {
-                    isProxyUse = true;
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                } else {
-                    isProxyUse = false;
-                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                }
-            }
+                let datatwo;
 
-            const cheeriot = cheerio.load(datatwo.data);
-
-
-            const brand = cheeriot(`#middle-wrapper > div > div.col-sm-8.col-md-8`);
-            const brandArray = [];
-
-            for (let i = 0; i < brand.length; i++) {
-                brandArray.push($(brand[i]).children("h1").text().replace(/[^a-zA-Z0-9 ]/g, '').trim());
-            }
-
-
-            obj.brand = brandArray[0];
-            obj.category = categoryArray[0];
-
-            const element = cheeriot(`h5.seeprices-header`);
-            const elementArray = [];
-
-            for (let i = 0; i < element.length; i++) {
-                elementArray.push({"href":  $(element[i]).children("a").attr('href'), "text": $(element[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
-            }
-
-            for (let i = 0; i < elementArray.length; i++) {
                 try {
-                    console.log(i);
-                    let datathree;
-
-                    try {
-                        if (!isProxyUse) {
-                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                        } else {
-                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-
-                        }
-                    } catch (e) {
-                        if (!isProxyUse) {
-                            isProxyUse = true;
-                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                        } else {
-                            isProxyUse = false;
-                            datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                        }
+                    if (!isProxyUse) {
+                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                    } else {
+                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                     }
-
-                    const cheeriote = cheerio.load(datathree.data);
-
-                    const element2 = cheeriote('div.col-md-8.col-sm-8.col-xs-7 > h5')
-                    const elementArray2 = [];
-
-                    for (let i = 0; i < element2.length; i++) {
-                        elementArray2.push({"href":  $(element2[i]).children("a").attr('href'), "text": $(element2[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
-                    }
-
-
-                    elementArray2.forEach((x, index) => {
-                        obj.url = url.slice(0, -1) + x.href;
-                        obj.title = x.text;
-
-                        console.log(obj)
-
-                        // axios.post("https://search.findmanual.guru/manual/search/insert", obj)
-                        //     .then(data => console.log("ok " + index))
-                        //     .catch(e => console.log(e));
-                    })
                 } catch (e) {
-                    console.error("here the problem" + i)
+                    if (!isProxyUse) {
+                        isProxyUse = true;
+                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+                    } else {
+                        isProxyUse = false;
+                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                    }
                 }
 
+                const cheeriot = cheerio.load(datatwo.data);
+
+
+                const brand = cheeriot(`#middle-wrapper > div > div.col-sm-8.col-md-8`);
+                const brandArray = [];
+
+                for (let i = 0; i < brand.length; i++) {
+                    brandArray.push($(brand[i]).children("h1").text().replace(/[^a-zA-Z0-9 ]/g, '').trim());
+                }
+
+
+                obj.brand = brandArray[0];
+                obj.category = categoryArray[0];
+
+                const element = cheeriot(`h5.seeprices-header`);
+                const elementArray = [];
+
+                for (let i = 0; i < element.length; i++) {
+                    elementArray.push({"href":  $(element[i]).children("a").attr('href'), "text": $(element[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
+                }
+
+                for (let i = 0; i < elementArray.length; i++) {
+                    try {
+                        console.log(i);
+                        let datathree;
+
+                        try {
+                            if (!isProxyUse) {
+                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                            } else {
+                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+
+                            }
+                        } catch (e) {
+                            if (!isProxyUse) {
+                                isProxyUse = true;
+                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
+                            } else {
+                                isProxyUse = false;
+                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
+                            }
+                        }
+
+                        const cheeriote = cheerio.load(datathree.data);
+
+                        const element2 = cheeriote('div.col-md-8.col-sm-8.col-xs-7 > h5')
+                        const elementArray2 = [];
+
+                        for (let i = 0; i < element2.length; i++) {
+                            elementArray2.push({"href":  $(element2[i]).children("a").attr('href'), "text": $(element2[i]).children("a").text().replace(/[^a-zA-Z0-9 ]/g, '').trim()});
+                        }
+
+
+                        elementArray2.forEach((x, index) => {
+                            obj.url = url.slice(0, -1) + x.href;
+                            obj.title = x.text;
+
+                            console.log(obj)
+
+                            // axios.post("https://search.findmanual.guru/manual/search/insert", obj)
+                            //     .then(data => console.log("ok " + index))
+                            //     .catch(e => console.log(e));
+                        })
+                    } catch (e) {
+                        console.error("here the problem " + i);
+                        i--;
+                    }
+
+                }
+
+            } catch (e) {
+                console.error("here problem with category " + i)
+                i--;
             }
 
         }
