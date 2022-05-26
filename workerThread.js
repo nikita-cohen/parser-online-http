@@ -13,6 +13,7 @@ let userAgent = [{'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Apple
 let hostObj = [];
 let success = [];
 let error = [];
+let start = new Date();
 
 axios.get("https://rootfails.com/proxy/f021011c43b83a07a58d3708aed53f5b").then(data => {
     let host = data.data.split("\n");
@@ -36,6 +37,8 @@ axios.get("https://rootfails.com/proxy/f021011c43b83a07a58d3708aed53f5b").then(d
 
 
 async function parseData(url) {
+
+
     let isProxyUse = false;
 
     let data;
@@ -201,6 +204,8 @@ parseData(workerData.url).then()
 
 console.error("success ", success.length);
 console.error("error " , error.length);
+console.log(start);
+console.log(new Date());
 console.error("-----------------------------------------------------------");
 console.error("-----------------------------------------------------------");
 console.error("-----------------------------------------------------------");
