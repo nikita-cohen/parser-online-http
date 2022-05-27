@@ -23,21 +23,24 @@ const data = [
     {url : "http://videogame.manualsonline.com/"}
 ]
 
-async function runWorker() {
-    const result = await Promise.all(data.map((obj, index) => {
-        new Promise((resolve, reject) =>  {
-            const worker = new Worker('./workerThread', {
-                workerData : obj
-            })
-
-            worker.on("message", resolve);
-            worker.on("error", reject);
-            worker.on("exit", (code) => {
-                if (code !== 0) reject(new Error("something go wrong"));
-            })
+async function runWorker(obj) {
+    return new Promise((resolve, reject) => {
+        const worker = new Worker('./workerThread', {
+            workerData : obj
         })
-    }))
 
+        worker.on("message", resolve);
+        worker.on("error", reject);
+        worker.on("exit", (code) => {
+            if (code !== 0) reject(new Error("something go wrong"));
+        })
+    })
 }
 
-runWorker().then()
+data.forEach(obj => {
+    runWorker(obj).then(data => {
+        if (data) {
+            console.log(data)
+        }
+    })
+})
