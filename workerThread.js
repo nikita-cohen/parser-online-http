@@ -37,27 +37,13 @@ axios.get("https://rootfails.com/proxy/f021011c43b83a07a58d3708aed53f5b").then(d
 
 
 async function parseData(url) {
-    let start = new Date();
-
-    let isProxyUse = false;
 
     let data;
 
     try {
-        if (!isProxyUse) {
-            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
-        } else {
-            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
-        }
+        data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
     } catch (e) {
-        if (!isProxyUse) {
-            isProxyUse = true;
-            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
-        } else {
-            isProxyUse = false;
-            data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
-        }
-
+        data = await axios.get(url, hostObj[Math.floor(Math.random() * hostObj.length)])
     }
 
     const obj = {};
@@ -86,19 +72,9 @@ async function parseData(url) {
                 let datatwo;
 
                 try {
-                    if (!isProxyUse) {
-                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                    } else {
-                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                    }
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                 } catch (e) {
-                    if (!isProxyUse) {
-                        isProxyUse = true;
-                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                    } else {
-                        isProxyUse = false;
-                        datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                    }
+                    datatwo = await axios.get(url.slice(0, -1) + hrefArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
                 }
 
                 const cheeriot = cheerio.load(datatwo.data);
@@ -129,20 +105,9 @@ async function parseData(url) {
                         let datathree;
 
                         try {
-                            if (!isProxyUse) {
                                 datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                            } else {
-                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-
-                            }
                         } catch (e) {
-                            if (!isProxyUse) {
-                                isProxyUse = true;
                                 datathree = await axios.get(url.slice(0, -1) + elementArray[i].href, hostObj[Math.floor(Math.random() * hostObj.length)])
-                            } else {
-                                isProxyUse = false;
-                                datathree = await axios.get(url.slice(0, -1) + elementArray[i].href , hostObj[Math.floor(Math.random() * hostObj.length)]);
-                            }
                         }
 
                         const cheeriote = cheerio.load(datathree.data);
@@ -193,51 +158,6 @@ async function parseData(url) {
     } catch (e) {
         console.log(e)
     }
-
-    console.error("success ", success.length);
-    console.error("error " , error.length);
-    console.log(start);
-    console.log(new Date());
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
-    console.error("-----------------------------------------------------------");
 }
 
 parseData(workerData.url).then()
